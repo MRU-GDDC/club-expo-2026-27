@@ -1,0 +1,96 @@
+[gd_scene format=4 uid="uid://iidgwjt4pv1s"]
+
+[ext_resource type="TileSet" uid="uid://di0tvoj2lo1ci" path="res://assets/build_tile_set.tres" id="2_1vipv"]
+[ext_resource type="PackedScene" uid="uid://cdupvh734iu54" path="res://scenes/exit.tscn" id="3_orh22"]
+[ext_resource type="Script" uid="uid://bquh4ud22fmo6" path="res://scripts/level_builder.gd" id="4_uktdw"]
+[ext_resource type="Texture2D" uid="uid://8mdupjygk4v5" path="res://assets/brick.png" id="5_dq8dm"]
+[ext_resource type="Texture2D" uid="uid://cjny5i2vcl2b6" path="res://assets/coin.png" id="6_k2y0o"]
+[ext_resource type="Texture2D" uid="uid://cwagukjirypbw" path="res://assets/spike.png" id="7_1wjr5"]
+[ext_resource type="PackedScene" uid="uid://6m2v2x8sgycl" path="res://scenes/game_manager.tscn" id="8_1vipv"]
+[ext_resource type="PackedScene" uid="uid://p2tnx04fsw2w" path="res://scenes/ui.tscn" id="8_cwj34"]
+[ext_resource type="PackedScene" uid="uid://cd74pyhvay3by" path="res://scenes/player1.tscn" id="9_vxuwn"]
+[ext_resource type="PackedScene" uid="uid://bkw1mwxy7snv2" path="res://scenes/map_maker_ui.tscn" id="10_orh22"]
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_3cxec"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_krauj"]
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_q5onr"]
+a = Vector2(0, 16)
+b = Vector2(480, 16)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_ytpe4"]
+b = Vector2(480, 0)
+
+[node name="MapMakerWorld" type="Node2D" unique_id=2119915315]
+
+[node name="Background" type="Sprite2D" parent="." unique_id=89586091]
+self_modulate = Color(0.6509804, 0.73333335, 0.7647059, 1)
+position = Vector2(-1.5258789e-05, 0)
+scale = Vector2(480, 320)
+texture = SubResource("CanvasTexture_3cxec")
+offset = Vector2(0.50000006, 0.5)
+
+[node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=1024609700]
+tile_map_data = PackedByteArray("AAAAAAMAAAAAAAAAAAABAAMAAAAAAAAAAAAdABMAAAAAAAAAAAAcABMAAAAAAAAAAAAbABMAAAAAAAAAAAACAAMAAAAAAAAAAAADAAIAAQAAAAAAAAAaABMAAAAAAAAAAAADAAMAAAAAAAAAAAADAAQAAAAAAAAAAAAEAAQAAAAAAAAAAAAEAAUAAAAAAAAAAAAJAAsAAAAAAAAAAAAIAAsAAAAAAAAAAAAHAAsAAAAAAAAAAAAGAAsAAAAAAAAAAAAAAA4AAAAAAAAAAAABAA4AAAAAAAAAAAACAA4AAAAAAAAAAAAZABMAAAAAAAAAAAAZABIAAAAAAAAAAAAYABIAAAAAAAAAAAAYABEAAAAAAAAAAAABAAsAAQAAAAAAAAAIAAQAAQAAAAAAAAAbABEAAQAAAAAAAAAFAAUAAAAAAAAAAAAFAAYAAAAAAAAAAAAGAAYAAAAAAAAAAAAHAAYAAAAAAAAAAAAIAAYAAAAAAAAAAAAKAAYAAAAAAAAAAAAJAAYAAAAAAAAAAAAOAAoAAAAAAAAAAAANAAoAAAAAAAAAAAAKAAsAAAAAAAAAAAALAAsAAAAAAAAAAAAGABEAAAAAAAAAAAAHABEAAAAAAAAAAAAIABEAAAAAAAAAAAAJABEAAAAAAAAAAAAKABEAAAAAAAAAAAALABEAAAAAAAAAAAAMABEAAAAAAAAAAAAPABAAAAAAAAAAAAAQABAAAAAAAAAAAAASAA8AAAAAAAAAAAARAA8AAAAAAAAAAAAQAA8AAAAAAAAAAAAVABAAAAAAAAAAAAAUABAAAAAAAAAAAAATABAAAAAAAAAAAAATAA8AAAAAAAAAAAASABAAAAAAAAAAAAARABAAAAAAAAAAAAAUAA8AAAAAAAAAAAAPAAoAAAAAAAAAAAAFABEAAAAAAAAAAAADAA4AAAAAAAAAAAAEAAoAAAAAAAAAAAAFAAoAAAAAAAAAAAAFAAsAAAAAAAAAAAAIAAoAAQAAAAAAAQAMAAsAAAAAAAAAAAANAAsAAAAAAAAAAAANAAgAAQAAAAAAAAAIABAAAQAAAAAAAQASAA4AAQAAAAAAAAA=")
+tile_set = ExtResource("2_1vipv")
+
+[node name="TopBoundary" type="StaticBody2D" parent="." unique_id=1946810573]
+disable_mode = 1
+physics_material_override = SubResource("PhysicsMaterial_krauj")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TopBoundary" unique_id=2132005715]
+shape = SubResource("SegmentShape2D_q5onr")
+
+[node name="BottomBoundary" type="Area2D" parent="." unique_id=59092828]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BottomBoundary" unique_id=604295080]
+position = Vector2(0, 320)
+shape = SubResource("SegmentShape2D_ytpe4")
+
+[node name="Exit" parent="." unique_id=1351766811 instance=ExtResource("3_orh22")]
+position = Vector2(472, 288)
+
+[node name="Player1" parent="." unique_id=582869663 instance=ExtResource("9_vxuwn")]
+position = Vector2(8, 32)
+
+[node name="Player1Spawn" type="Marker2D" parent="." unique_id=2043923237]
+position = Vector2(8, 32)
+gizmo_extents = 0.0
+
+[node name="LevelBuilder" type="Node" parent="." unique_id=189248045]
+script = ExtResource("4_uktdw")
+brick_texture = ExtResource("5_dq8dm")
+collectible_texture = ExtResource("6_k2y0o")
+spike_texture = ExtResource("7_1wjr5")
+
+[node name="PlacementPreview" type="Sprite2D" parent="LevelBuilder" unique_id=769757026]
+self_modulate = Color(1, 1, 1, 0.45000002)
+z_index = 5
+
+[node name="GameManager" parent="." unique_id=1824381181 node_paths=PackedStringArray("player1_spawn", "level_exit", "ui") instance=ExtResource("8_1vipv")]
+player1_spawn = NodePath("../Player1Spawn")
+level_exit = NodePath("../Exit")
+ui = NodePath("../UI")
+
+[node name="UI" parent="." unique_id=248340466 instance=ExtResource("8_cwj34")]
+
+[node name="MapMakerUI" parent="." unique_id=628401176 instance=ExtResource("10_orh22")]
+
+[connection signal="body_entered" from="TileMapLayer/Collectible" to="TileMapLayer/Collectible" method="_on_body_entered"]
+[connection signal="body_entered" from="TileMapLayer/@Area2D@94126" to="TileMapLayer/@Area2D@94126" method="_on_body_entered"]
+[connection signal="body_entered" from="TileMapLayer/@Area2D@94127" to="TileMapLayer/@Area2D@94127" method="_on_body_entered"]
+[connection signal="body_entered" from="TileMapLayer/@Area2D@94128" to="TileMapLayer/@Area2D@94128" method="_on_body_entered"]
+[connection signal="body_entered" from="TileMapLayer/Spike" to="TileMapLayer/Spike" method="_on_body_entered"]
+[connection signal="body_entered" from="TileMapLayer/@Area2D@94129" to="TileMapLayer/@Area2D@94129" method="_on_body_entered"]
+[connection signal="body_entered" from="TileMapLayer/@Area2D@94130" to="TileMapLayer/@Area2D@94130" method="_on_body_entered"]
+[connection signal="body_entered" from="TileMapLayer/@Area2D@94131" to="TileMapLayer/@Area2D@94131" method="_on_body_entered"]
+[connection signal="body_entered" from="BottomBoundary" to="GameManager" method="_on_bottom_boundary_body_entered"]
+[connection signal="completed" from="Exit" to="GameManager" method="_on_exit_completed"]
+[connection signal="died" from="Player1" to="GameManager" method="_on_player_died"]
+[connection signal="level_changed" from="LevelBuilder" to="GameManager" method="_on_level_builder_level_changed"]
+[connection signal="brick_selected" from="MapMakerUI" to="LevelBuilder" method="_on_map_maker_ui_brick_selected"]
+[connection signal="collectible_selected" from="MapMakerUI" to="LevelBuilder" method="_on_map_maker_ui_collectible_selected"]
+[connection signal="edit_selected" from="MapMakerUI" to="LevelBuilder" method="_on_map_maker_ui_edit_selected"]
+[connection signal="play_selected" from="MapMakerUI" to="LevelBuilder" method="_on_map_maker_ui_play_selected"]
+[connection signal="spike_selected" from="MapMakerUI" to="LevelBuilder" method="_on_map_maker_ui_spike_selected"]

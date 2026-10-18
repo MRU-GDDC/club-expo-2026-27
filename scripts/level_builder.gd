@@ -3,6 +3,7 @@ extends Node
 signal level_changed
 
 @onready var tile_map: TileMapLayer = $"../TileMapLayer"
+@onready var player: CharacterBody2D = $"../Player1"
 @onready var placement_preview: Sprite2D = $PlacementPreview
 
 @export var brick_texture: Texture2D
@@ -17,32 +18,35 @@ const SPIKE_ID: int = 1
 
 const TILE_COORDS := Vector2i(0, 0)
 
-const BUILD_AREA := Rect2(
-	Vector2(0, 16),
-	Vector2(480, 304)
-)
+const BUILD_AREA := Rect2(Vector2(0, 16), Vector2(480, 304))
 
 enum BuildItem {
 	BRICK,
 	COLLECTIBLE,
-	SPIKE
+	SPIKE,
 }
 
 var selected_item: BuildItem = BuildItem.BRICK
 var edit_mode: bool = false
 
+
 func _ready() -> void:
 	update_preview_texture()
 	call_deferred("set_edit_mode", false)
-	
+
+
 func _process(_delta: float) -> void:
 	update_placement_preview()
 
+
 func update_preview_texture() -> void:
 	match selected_item:
-		BuildItem.BRICK: placement_preview.texture = brick_texture
-		BuildItem.COLLECTIBLE: placement_preview.texture = collectible_texture
-		BuildItem.SPIKE: placement_preview.texture = spike_texture
+		BuildItem.BRICK:
+			placement_preview.texture = brick_texture
+		BuildItem.COLLECTIBLE:
+			placement_preview.texture = collectible_texture
+		BuildItem.SPIKE:
+			placement_preview.texture = spike_texture
 
 
 func update_placement_preview() -> void:
@@ -61,43 +65,45 @@ func update_placement_preview() -> void:
 	placement_preview.show()
 
 
-func _on_ui_brick_selected() -> void:
+func _on_map_maker_ui_brick_selected() -> void:
 	selected_item = BuildItem.BRICK
 	update_preview_texture()
 	#print("Brick")
 
 
-func _on_ui_collectible_selected() -> void:
+func _on_map_maker_ui_collectible_selected() -> void:
 	selected_item = BuildItem.COLLECTIBLE
 	update_preview_texture()
 	#print("Collectible")
 
 
-func _on_ui_spike_selected() -> void:
+func _on_map_maker_ui_spike_selected() -> void:
 	selected_item = BuildItem.SPIKE
 	update_preview_texture()
 	#print("Spike")
 
-func _on_ui_edit_selected() -> void:
+
+func _on_map_maker_ui_edit_selected() -> void:
 	set_edit_mode(true)
 	#print("Edit")
 
 
-func _on_ui_play_selected() -> void:
+func _on_map_maker_ui_play_selected() -> void:
 	set_edit_mode(false)
 	#print("Play")
+
 
 func set_edit_mode(enabled: bool) -> void:
 	edit_mode = enabled
 	if not edit_mode:
 		placement_preview.hide()
-	if Globals.player == null:
+	if player == null:
 		return
-	Globals.player.velocity = Vector2.ZERO
+	player.velocity = Vector2.ZERO
 	if edit_mode:
-		Globals.player.process_mode = Node.PROCESS_MODE_DISABLED
+		player.process_mode = Node.PROCESS_MODE_DISABLED
 	else:
-		Globals.player.process_mode = Node.PROCESS_MODE_INHERIT
+		player.process_mode = Node.PROCESS_MODE_INHERIT
 
 
 func get_mouse_cell() -> Vector2i:
@@ -119,11 +125,16 @@ func place_item() -> void:
 	if tile_map.get_cell_source_id(cell) != -1:
 		return
 	match selected_item:
-		BuildItem.BRICK: tile_map.set_cell(cell, BRICK_SOURCE, TILE_COORDS, 0)
-		BuildItem.COLLECTIBLE: tile_map.set_cell(cell, SCENE_SOURCE, TILE_COORDS, COLLECTIBLE_ID)
-		BuildItem.SPIKE: tile_map.set_cell(cell, SCENE_SOURCE, TILE_COORDS, SPIKE_ID)
+		BuildItem.BRICK:
+			tile_map.set_cell(cell, BRICK_SOURCE, TILE_COORDS, 0)
+		BuildItem.COLLECTIBLE:
+			tile_map.set_cell(cell, SCENE_SOURCE, TILE_COORDS, COLLECTIBLE_ID)
+		BuildItem.SPIKE:
+			tile_map.set_cell(cell, SCENE_SOURCE, TILE_COORDS, SPIKE_ID)
 	tile_map.update_internals()
-	level_changed.emit()
+	if selected_item == BuildItem.COLLECTIBLE:
+		level_changed.emit()
+
 
 func remove_item() -> void:
 	if not edit_mode:
@@ -131,9 +142,17 @@ func remove_item() -> void:
 	if not mouse_is_inside_build_area():
 		return
 	var cell: Vector2i = get_mouse_cell()
+	var source_id: int = tile_map.get_cell_source_id(cell)
+	if source_id == -1:
+		return
+	var alternative_id: int = tile_map.get_cell_alternative_tile(cell)
+	var removing_collectible: bool = (
+		source_id == SCENE_SOURCE and alternative_id == COLLECTIBLE_ID
+	)
 	tile_map.erase_cell(cell)
 	tile_map.update_internals()
-	level_changed.emit()
+	if removing_collectible:
+		level_changed.emit()
 
 
 func _unhandled_input(event: InputEvent) -> void:

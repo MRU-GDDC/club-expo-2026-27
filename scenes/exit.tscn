@@ -45,6 +45,7 @@ position = Vector2(0, 2.5)
 shape = SubResource("RectangleShape2D_krauj")
 
 [node name="WinTimer" type="Timer" parent="." unique_id=1794878338]
+wait_time = 3.0
 one_shot = true
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

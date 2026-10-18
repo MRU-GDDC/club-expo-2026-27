@@ -1,0 +1,62 @@
+[gd_scene format=3 uid="uid://bkw1mwxy7snv2"]
+
+[ext_resource type="Script" uid="uid://dlsvnkbx5rgw4" path="res://scripts/map_maker_ui.gd" id="1_eq6f4"]
+[ext_resource type="Theme" uid="uid://cvgbt5bd2tj07" path="res://assets/ui_theme.tres" id="2_26lyk"]
+[ext_resource type="Texture2D" uid="uid://8mdupjygk4v5" path="res://assets/brick.png" id="3_f8ef7"]
+[ext_resource type="Texture2D" uid="uid://cjny5i2vcl2b6" path="res://assets/coin.png" id="4_nknhq"]
+[ext_resource type="Texture2D" uid="uid://cwagukjirypbw" path="res://assets/spike.png" id="5_wf7uw"]
+
+[node name="MapMakerUI" type="CanvasLayer" unique_id=630231251]
+script = ExtResource("1_eq6f4")
+
+[node name="RightTopBar" type="HBoxContainer" parent="." unique_id=1815628325]
+offset_left = 435.5
+offset_right = 519.5
+offset_bottom = 32.0
+scale = Vector2(0.5, 0.5)
+theme = ExtResource("2_26lyk")
+
+[node name="Edit" type="Button" parent="RightTopBar" unique_id=1233742235]
+layout_mode = 2
+text = "Edit"
+
+[node name="Play" type="Button" parent="RightTopBar" unique_id=1244119782]
+layout_mode = 2
+action_mode = 0
+text = "Play"
+
+[node name="BuildBar" type="VBoxContainer" parent="." unique_id=1095781428]
+offset_left = 432.0
+offset_top = 24.0
+offset_right = 512.0
+offset_bottom = 104.0
+scale = Vector2(0.5, 0.5)
+theme = ExtResource("2_26lyk")
+accessibility_region = true
+
+[node name="Brick" type="Button" parent="BuildBar" unique_id=184163294]
+layout_mode = 2
+text = "Brick"
+icon = ExtResource("3_f8ef7")
+alignment = 0
+expand_icon = true
+
+[node name="Collectible" type="Button" parent="BuildBar" unique_id=830467173]
+layout_mode = 2
+text = "Coin"
+icon = ExtResource("4_nknhq")
+alignment = 0
+expand_icon = true
+
+[node name="Spike" type="Button" parent="BuildBar" unique_id=1526276403]
+layout_mode = 2
+text = "Spike"
+icon = ExtResource("5_wf7uw")
+alignment = 0
+expand_icon = true
+
+[connection signal="pressed" from="RightTopBar/Edit" to="." method="_on_edit_pressed"]
+[connection signal="pressed" from="RightTopBar/Play" to="." method="_on_play_pressed"]
+[connection signal="pressed" from="BuildBar/Brick" to="." method="_on_brick_pressed"]
+[connection signal="pressed" from="BuildBar/Collectible" to="." method="_on_collectible_pressed"]
+[connection signal="pressed" from="BuildBar/Spike" to="." method="_on_spike_pressed"]
