@@ -31,7 +31,7 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_krauj"]
-size = Vector2(16, 27)
+size = Vector2(29, 32)
 
 [node name="Exit" type="Area2D" unique_id=1351766811]
 script = ExtResource("1_uyw7u")
@@ -41,7 +41,6 @@ sprite_frames = SubResource("SpriteFrames_ytpe4")
 animation = &"open"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=780397305]
-position = Vector2(0, 2.5)
 shape = SubResource("RectangleShape2D_krauj")
 
 [node name="WinTimer" type="Timer" parent="." unique_id=1794878338]

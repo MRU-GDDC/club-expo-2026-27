@@ -52,11 +52,11 @@ tile_set = SubResource("TileSet_ytpe4")
 tile_map_data = PackedByteArray("AAAAABIAAAAAAAAAAAAAABMAAAAAAAAAAAABABIAAAAAAAAAAAABABMAAAAAAAAAAAACABIAAAAAAAAAAAACABMAAAAAAAAAAAADABIAAAAAAAAAAAADABMAAAAAAAAAAAAEABIAAAAAAAAAAAAEABMAAAAAAAAAAAAFABIAAAAAAAAAAAAFABMAAAAAAAAAAAAGABIAAAAAAAAAAAAGABMAAAAAAAAAAAAHABIAAAAAAAAAAAAHABMAAAAAAAAAAAAIABIAAAAAAAAAAAAIABMAAAAAAAAAAAAJABIAAAAAAAAAAAAJABMAAAAAAAAAAAAKABIAAAAAAAAAAAAKABMAAAAAAAAAAAALABIAAAAAAAAAAAALABMAAAAAAAAAAAAMABIAAAAAAAAAAAAMABMAAAAAAAAAAAANABIAAAAAAAAAAAANABMAAAAAAAAAAAAOABIAAAAAAAAAAAAOABMAAAAAAAAAAAAPABMAAAAAAAAAAAAQABMAAAAAAAAAAAARABMAAAAAAAAAAAASABIAAAAAAAAAAAASABMAAAAAAAAAAAATABIAAAAAAAAAAAATABMAAAAAAAAAAAAUABIAAAAAAAAAAAAUABMAAAAAAAAAAAAVABIAAAAAAAAAAAAVABMAAAAAAAAAAAAWABIAAAAAAAAAAAAWABMAAAAAAAAAAAAXABIAAAAAAAAAAAAXABMAAAAAAAAAAAAYABIAAAAAAAAAAAAYABMAAAAAAAAAAAAZABIAAAAAAAAAAAAZABMAAAAAAAAAAAAaABIAAAAAAAAAAAAaABMAAAAAAAAAAAAbABIAAAAAAAAAAAAbABMAAAAAAAAAAAAcABIAAAAAAAAAAAAcABMAAAAAAAAAAAAdABIAAAAAAAAAAAAdABMAAAAAAAAAAAAJABEAAAAAAAAAAAAKABEAAAAAAAAAAAAKABAAAAAAAAAAAAALABAAAAAAAAAAAAALAA8AAAAAAAAAAAALABEAAAAAAAAAAAAMABAAAAAAAAAAAAAMAA8AAAAAAAAAAAAMABEAAAAAAAAAAAAbAA4AAAAAAAAAAAAPABIAAQAAAAAAAAAQABIAAQAAAAAAAAAcAA4AAAAAAAAAAAAbAAwAAgAAAAAAAAAYABAAAAAAAAAAAAAXABAAAAAAAAAAAAAWABAAAAAAAAAAAAAaAA4AAAAAAAAAAAARABIAAQAAAAAAAAABABEABQAAAAEAAAABABAABQAAAAAAAAACABAABQABAAAAAAACABEABQABAAEAAAA=")
 tile_set = SubResource("TileSet_krauj")
 
-[node name="Container" type="Control" parent="." unique_id=392231885]
+[node name="UIContainer" type="Control" parent="." unique_id=392231885]
 layout_mode = 3
 anchors_preset = 0
 
-[node name="Title" type="RichTextLabel" parent="Container" unique_id=568138195]
+[node name="Title" type="RichTextLabel" parent="UIContainer" unique_id=568138195]
 layout_mode = 0
 offset_right = 240.0
 offset_bottom = 40.0
@@ -65,34 +65,34 @@ text = "Regular Bros"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Container" unique_id=518104075]
+[node name="Menu" type="VBoxContainer" parent="UIContainer" unique_id=518104075]
 layout_mode = 0
 offset_left = 180.0
 offset_top = 90.0
 offset_right = 300.0
 offset_bottom = 210.0
 
-[node name="TwoPlayer" type="Button" parent="Container/VBoxContainer" unique_id=51299835]
+[node name="TwoPlayer" type="Button" parent="UIContainer/Menu" unique_id=51299835]
 layout_mode = 2
 text = "Two Player"
 icon = ExtResource("3_rtw2f")
 alignment = 0
 expand_icon = true
 
-[node name="MapMaker" type="Button" parent="Container/VBoxContainer" unique_id=2007019911]
+[node name="MapMaker" type="Button" parent="UIContainer/Menu" unique_id=2007019911]
 layout_mode = 2
 text = "Map Maker"
 icon = ExtResource("4_oa1go")
 alignment = 0
 expand_icon = true
 
-[node name="Quit" type="Button" parent="Container/VBoxContainer" unique_id=1410490587]
+[node name="Quit" type="Button" parent="UIContainer/Menu" unique_id=1410490587]
 layout_mode = 2
 text = "Quit"
 icon = ExtResource("5_tbmy8")
 alignment = 0
 expand_icon = true
 
-[connection signal="pressed" from="Container/VBoxContainer/TwoPlayer" to="." method="_on_two_player_pressed"]
-[connection signal="pressed" from="Container/VBoxContainer/MapMaker" to="." method="_on_map_maker_pressed"]
-[connection signal="pressed" from="Container/VBoxContainer/Quit" to="." method="_on_quit_pressed"]
+[connection signal="pressed" from="UIContainer/Menu/TwoPlayer" to="." method="_on_two_player_pressed"]
+[connection signal="pressed" from="UIContainer/Menu/MapMaker" to="." method="_on_map_maker_pressed"]
+[connection signal="pressed" from="UIContainer/Menu/Quit" to="." method="_on_quit_pressed"]
